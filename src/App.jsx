@@ -29,7 +29,7 @@ function App() {
     }
   };
 
-  // Load projects when page opens
+  // Load projects when page loads
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -43,15 +43,21 @@ function App() {
 
     try {
       await addDoc(collection(db, "projects"), {
-        name,
-        url,
-        createdAt: new Date(),
-      });
+  name,
+  url,
+  platform: "Supabase",
+  pingEveryDays: 4,
+  enabled: true,
+  status: "Never Run",
+  responseTime: null,
+  lastPing: null,
+  createdAt: new Date(),
+});
 
       setName("");
       setUrl("");
 
-      fetchProjects();
+      await fetchProjects();
 
       alert("Project Added!");
     } catch (error) {
@@ -64,7 +70,7 @@ function App() {
   const handleDelete = async (id) => {
     try {
       await deleteDoc(doc(db, "projects", id));
-      fetchProjects();
+      await fetchProjects();
     } catch (error) {
       console.error(error);
       alert("Failed to delete project.");
@@ -72,7 +78,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>PingKeeper</h1>
 
       <input
@@ -109,16 +115,44 @@ function App() {
             key={project.id}
             style={{
               border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-              width: "500px",
+              padding: "15px",
+              marginBottom: "15px",
+              borderRadius: "8px",
+              maxWidth: "600px",
             }}
           >
             <strong>{project.name}</strong>
 
             <br />
+            <br />
 
+            <strong>URL:</strong>
+            <br />
             {project.url}
+
+            <br />
+            <br />
+
+            <strong>Status:</strong> {project.status}
+
+            <br />
+
+            <strong>Enabled:</strong>{" "}
+            {project.enabled ? "Yes" : "No"}
+
+            <br />
+
+            <strong>Last Ping:</strong>{" "}
+            {project.lastPing
+              ? project.lastPing.toDate
+                ? project.lastPing.toDate().toLocaleString()
+                : project.lastPing
+              : "Never"}
+
+            <br />
+
+            <strong>Response Time:</strong>{" "}
+            {project.responseTime ?? "-"} ms
 
             <br />
             <br />

@@ -1,0 +1,31 @@
+name: PingKeeper
+
+on:
+  schedule:
+    # Every 4th day of the month at 00:00 UTC
+    - cron: "0 0 */4 * *"
+
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create Firebase Service Account
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > service-account.json
+
+      - name: Run PingKeeper
+        run: npm run ping

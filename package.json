@@ -7,10 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ping": "node scripts/ping.js"
   },
   "dependencies": {
     "firebase": "^12.15.0",
+    "firebase-admin": "^14.1.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
