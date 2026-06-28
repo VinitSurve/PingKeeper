@@ -26,7 +26,8 @@ async function pingProjects() {
       const responseTime = Date.now() - start;
 
       await document.ref.update({
-  status: response.ok ? "Online" : `HTTP ${response.status}`,
+ status: response.ok ? "online" : "offline",
+httpStatus: response.status,
   responseTime,
   lastPing: new Date(),
 });
@@ -36,7 +37,7 @@ async function pingProjects() {
       );
     } catch (error) {
       await document.ref.update({
-        status: "Offline",
+        status: "offline",
         responseTime: null,
         lastPing: new Date(),
       });

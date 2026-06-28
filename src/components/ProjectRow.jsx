@@ -1,9 +1,13 @@
+import { useState } from "react";
+
 import "./ProjectRow.css";
 
 import {
   Play,
   Pencil,
   Trash2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 function ProjectRow({
@@ -12,152 +16,227 @@ function ProjectRow({
   onDelete,
 }) {
 
-  const statusClass =
-    project.status === "online"
-      ? "online"
-      : "offline";
+  const [expanded, setExpanded] =
+    useState(false);
+
+  const status = String(project.status || "")
+    .toLowerCase();
+
+  let statusClass = "unknown";
+
+  if (status === "online") {
+    statusClass = "online";
+  } else if (status === "offline") {
+    statusClass = "offline";
+  }
+
+  const latency =
+    project.responseTime != null
+      ? `${project.responseTime}ms`
+      : project.latency || "--";
+
+  const lastPing =
+    project.lastPing?.toDate
+      ? new Intl.DateTimeFormat("en", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        }).format(project.lastPing.toDate())
+      : project.lastPing || "Never";
+
+  const hostname = (() => {
+
+    if (!project.url) return "";
+
+    try {
+
+      const url = project.url.startsWith("http")
+        ? project.url
+        : `https://${project.url}`;
+
+      return new URL(url).hostname;
+
+    } catch {
+
+      return project.url;
+
+    }
+
+  })();
 
   return (
 
-    <article className={`project-row ${layout}`}>
+    <article className={`project-row-wrapper ${layout}`}>
 
-      {/* Left */}
+      <div className="project-row">
 
-      <div className="project-main">
+        {/* Left */}
 
-        <span
-          className={`status-dot ${statusClass}`}
-        />
+        <div className="project-main">
 
-        <div>
+          <span
+            className={`status-dot ${statusClass}`}
+          />
 
-          <h3>
-            {project.name}
-          </h3>
+          <div>
 
-          <p>
-            {project.url}
-          </p>
+            <h3>
+              {project.name}
+            </h3>
+
+            <p title={project.url}>
+              {hostname}
+            </p>
+
+          </div>
 
         </div>
 
-      </div>
+        {/* Platform */}
 
-      {/* Platform */}
+        <div className="project-meta">
 
-      <div className="project-meta">
+          <span className="meta-label">
+            Platform
+          </span>
 
-        <span className="meta-label">
-          Platform
-        </span>
+          <span className="meta-value">
+            {project.platform || "Unknown"}
+          </span>
 
-        <span className="meta-value">
-          {project.platform}
-        </span>
+        </div>
 
-      </div>
+        {/* Status */}
 
-      {/* Status */}
+        <div className="project-meta">
 
-      <div className="project-meta">
+          <span className="meta-label">
+            Status
+          </span>
 
-        <span className="meta-label">
-          Status
-        </span>
+          <span
+            className={`meta-value ${statusClass}`}
+          >
+            {project.status || "Never Run"}
+          </span>
 
-        <span
-          className={`meta-value ${statusClass}`}
-        >
-          {project.status}
-        </span>
+        </div>
 
-      </div>
+        {/* Latency */}
 
-      {/* Latency */}
+        <div className="project-meta">
 
-      <div className="project-meta">
+          <span className="meta-label">
+            Latency
+          </span>
 
-        <span className="meta-label">
-          Latency
-        </span>
+          <span className="meta-value">
+            {latency}
+          </span>
 
-        <span className="meta-value">
-          {project.latency}
-        </span>
+        </div>
 
-      </div>
+        {/* Last Ping */}
 
-      {/* Last Ping */}
+        <div className="project-meta">
 
-      <div className="project-meta">
+          <span className="meta-label">
+            Last Ping
+          </span>
 
-        <span className="meta-label">
-          Last Ping
-        </span>
+          <span className="meta-value">
+            {lastPing}
+          </span>
 
-        <span className="meta-value">
-          {project.lastPing}
-        </span>
+        </div>
 
-      </div>
+        {/* Interval */}
 
-      {/* Interval */}
+        <div className="project-meta">
 
-      <div className="project-meta">
+          <span className="meta-label">
+            Interval
+          </span>
 
-        <span className="meta-label">
-          Interval
-        </span>
+          <span className="meta-value">
+            {project.interval || "4 days"}
+          </span>
 
-        <span className="meta-value">
-          {project.interval}
-        </span>
+        </div>
 
-      </div>
-
-      {/* Actions */}
-
-      <div className="project-actions">
-
-        <button className="ping-btn">
-
-          <Play
-            size={15}
-            strokeWidth={2}
-          />
-
-          Ping
-
-        </button>
-
-        <button className="edit-btn">
-
-          <Pencil
-            size={15}
-            strokeWidth={2}
-          />
-
-          Edit
-
-        </button>
+        {/* Expand Button */}
 
         <button
-          className="delete-btn"
+          className="expand-btn"
+          type="button"
           onClick={() =>
-            onDelete(project.id)
+            setExpanded(!expanded)
           }
         >
 
-          <Trash2
-            size={15}
-            strokeWidth={2}
-          />
-
-          Delete
+          {expanded ? (
+            <ChevronUp size={18} />
+          ) : (
+            <ChevronDown size={18} />
+          )}
 
         </button>
 
       </div>
+
+      {expanded && (
+
+        <div className="project-actions">
+
+          <button
+            className="ping-btn"
+            type="button"
+          >
+
+            <Play
+              size={15}
+              strokeWidth={2}
+            />
+
+            Ping
+
+          </button>
+
+          <button
+            className="edit-btn"
+            type="button"
+          >
+
+            <Pencil
+              size={15}
+              strokeWidth={2}
+            />
+
+            Edit
+
+          </button>
+
+          <button
+            className="delete-btn"
+            type="button"
+            onClick={() =>
+              onDelete(project.id)
+            }
+          >
+
+            <Trash2
+              size={15}
+              strokeWidth={2}
+            />
+
+            Delete
+
+          </button>
+
+        </div>
+
+      )}
 
     </article>
 

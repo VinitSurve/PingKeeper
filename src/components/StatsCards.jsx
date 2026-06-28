@@ -4,15 +4,27 @@ function StatsCards({ projects }) {
   const total = projects.length;
 
   const online = projects.filter(
-    (p) => p.status === "online"
-  ).length;
+  p => String(p.status).toLowerCase() === "online"
+).length;
 
-  const offline = projects.filter(
-    (p) => p.status === "offline"
-  ).length;
+const offline = projects.filter(
+  p => {
+    const s = String(p.status).toLowerCase();
+
+    return (
+      s === "offline" ||
+      s.startsWith("http")
+    );
+  }
+).length;
 
   const latencies = projects
-    .map((p) => parseInt(p.latency))
+    .map(p =>
+  Number(
+    p.responseTime ??
+    parseInt(p.latency)
+  )
+)
     .filter((n) => !isNaN(n));
 
   const averageLatency =

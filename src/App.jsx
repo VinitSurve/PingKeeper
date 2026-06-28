@@ -1,5 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./App.css";
+
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
+
+import { db } from "./firebase/firebase";
 
 import Navbar from "./components/Navbar";
 import StatsCards from "./components/StatsCards";
@@ -10,104 +21,71 @@ import Footer from "./components/Footer";
 
 function App() {
   const [search, setSearch] = useState("");
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: "Portfolio API",
-      platform: "Render",
-      url: "https://api.vinit.dev/health",
-      status: "online",
-      latency: "112ms",
-      lastPing: "2m ago",
-      interval: "15m",
-    },
-    {
-      id: 2,
-      name: "Data Scraper",
-      platform: "Fly.io",
-      url: "https://scraper-prod.fly.dev",
-      status: "offline",
-      latency: "--",
-      lastPing: "14m ago",
-      interval: "30m",
-    },
-    {
-      id: 3,
-      name: "Auth Service",
-      platform: "Railway",
-      url: "https://auth.railway.app",
-      status: "online",
-      latency: "42ms",
-      lastPing: "Just now",
-      interval: "10m",
-    },
-    {
-      id: 4,
-      name: "Marketing Site",
-      platform: "Vercel",
-      url: "https://pingkeeper.vercel.app",
-      status: "online",
-      latency: "28ms",
-      lastPing: "5m ago",
-      interval: "1h",
-    },
-    {
-      id: 5,
-      name: "Discord Bot",
-      platform: "Render",
-      url: "https://bot.onrender.com",
-      status: "online",
-      latency: "89ms",
-      lastPing: "1m ago",
-      interval: "30m",
-    },
-    {
-      id: 6,
-      name: "Supabase Backend",
-      platform: "Supabase",
-      url: "https://xxxxx.supabase.co",
-      status: "online",
-      latency: "51ms",
-      lastPing: "3m ago",
-      interval: "15m",
-    },
-  ]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "projects"),
+      (snapshot) => {
+        const data = snapshot.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data(),
+        }));
 
-  const handleAdd = (project) => {
-    const newProject = {
-      id: Date.now(),
-      ...project,
-      status: "online",
-      latency: "...",
-      lastPing: "Just now",
-      interval: "15m",
-    };
-
-    setProjects((prev) => [newProject, ...prev]);
-  };
-
-  const handleDelete = (id) => {
-    setProjects((prev) =>
-      prev.filter((project) => project.id !== id)
+        setProjects(data);
+        setLoading(false);
+      }
     );
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleAdd = async (project) => {
+  try {
+    await addDoc(collection(db, "projects"), {
+      name: project.name,
+      platform: project.platform,
+      url: project.url,
+
+      enabled: true,
+
+      status: "Never Run",
+      responseTime: null,
+      lastPing: "Never",
+      interval: "4 days",
+
+      createdAt: serverTimestamp(),
+    });
+  } catch (err) {
+    console.error(err);
+    alert("Couldn't add project.");
+  }
+};
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, "projects", id));
+    } catch (err) {
+      console.error(err);
+      alert("Couldn't delete project.");
+    }
   };
 
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
-      const value = search.toLowerCase();
+    const value = search.toLowerCase();
 
+    return projects.filter((project) => {
       return (
-        project.name.toLowerCase().includes(value) ||
-        project.url.toLowerCase().includes(value) ||
-        project.platform.toLowerCase().includes(value)
+        project.name?.toLowerCase().includes(value) ||
+        project.platform?.toLowerCase().includes(value) ||
+        project.url?.toLowerCase().includes(value)
       );
     });
   }, [projects, search]);
 
   return (
     <div className="app">
-
       <Navbar
         search={search}
         setSearch={setSearch}
@@ -116,7 +94,6 @@ function App() {
       <main className="dashboard">
 
         <section className="hero">
-
           <span className="hero-label">
             Infrastructure Workspace
           </span>
@@ -129,19 +106,15 @@ function App() {
             Keep your free-tier cloud projects alive with
             automated health monitoring.
           </p>
-
         </section>
 
-        <StatsCards
-          projects={projects}
-        />
+        <StatsCards projects={projects} />
 
-        <AddProject
-          onAdd={handleAdd}
-        />
+        <AddProject onAdd={handleAdd} />
 
         <ProjectList
           projects={filteredProjects}
+          loading={loading}
           onDelete={handleDelete}
         />
 
@@ -150,7 +123,6 @@ function App() {
         <Footer />
 
       </main>
-
     </div>
   );
 }
