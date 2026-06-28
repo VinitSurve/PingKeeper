@@ -1,40 +1,49 @@
 import "./EmptyState.css";
 
+import {
+  ServerCrash,
+  Plus,
+} from "lucide-react";
+
 function EmptyState() {
   return (
-    <div className="empty-state">
+
+    <section className="empty-state">
 
       <div className="empty-icon">
-        ☁️
+
+        <ServerCrash
+          size={36}
+        />
+
       </div>
 
-      <h2>No Projects Yet</h2>
+      <h2>
+
+        No projects yet
+
+      </h2>
 
       <p>
-        Add your first backend endpoint and PingKeeper will
-        start monitoring it automatically.
+
+        Add your first backend service and
+        PingKeeper will start monitoring it
+        automatically.
+
       </p>
 
-      <div className="empty-features">
+      <button>
 
-        <div className="feature">
-          <span>⚡</span>
-          <p>Automatic Pinging</p>
-        </div>
+        <Plus
+          size={17}
+        />
 
-        <div className="feature">
-          <span>🟢</span>
-          <p>Health Monitoring</p>
-        </div>
+        Add First Project
 
-        <div className="feature">
-          <span>📈</span>
-          <p>Response Times</p>
-        </div>
+      </button>
 
-      </div>
+    </section>
 
-    </div>
   );
 }
 

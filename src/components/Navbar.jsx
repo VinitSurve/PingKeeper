@@ -1,5 +1,11 @@
 import "./Navbar.css";
 
+import {
+  Search,
+  Code2,
+  LayoutGrid,
+} from "lucide-react";
+
 function Navbar({ search, setSearch }) {
   return (
     <header className="navbar">
@@ -8,58 +14,58 @@ function Navbar({ search, setSearch }) {
 
         <div className="logo">
 
-          <div className="logo-circle">
-            ⚡
-          </div>
-
-          <div>
-
-            <h2>PingKeeper</h2>
-
-            <span>
-              Infrastructure Workspace
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div className="nav-center">
-
-        <div className="search-box">
-
-          <span className="search-icon">
-            🔍
-          </span>
-
-          <input
-            type="text"
-            placeholder="Search projects..."
-            value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
+          <LayoutGrid
+            size={18}
+            strokeWidth={2}
           />
 
-          <kbd>⌘K</kbd>
+        </div>
+
+        <div className="brand">
+
+          <h2>PingKeeper</h2>
+
+          <span>
+            Infrastructure Workspace
+          </span>
 
         </div>
 
       </div>
 
-      <div className="nav-right">
+      <div className="nav-search">
 
-        <button className="github-btn">
+        <Search
+          size={17}
+          className="search-icon"
+        />
 
-          <span>⭐</span>
-
-          GitHub
-
-        </button>
+        <input
+          type="text"
+          placeholder="Search infrastructure..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
 
       </div>
+
+      <a
+        className="github-btn"
+        href="https://github.com"
+        target="_blank"
+        rel="noreferrer"
+      >
+
+        <Code2
+          size={17}
+          strokeWidth={2}
+        />
+
+        <span>GitHub</span>
+
+      </a>
 
     </header>
   );

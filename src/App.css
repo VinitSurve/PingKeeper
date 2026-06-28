@@ -1,192 +1,154 @@
-:root{
-  --bg:#09090b;
-  --surface:#111114;
-  --surface2:#141419;
-  --border:#222228;
-
-  --text:#fafafa;
-  --muted:#8b8b95;
-
-  --green:#22c55e;
-  --orange:#f59e0b;
-  --red:#ef4444;
-
-  --radius:24px;
-
-  --shadow:
-  0 20px 60px rgba(0,0,0,.35);
-
-  --transition:.28s cubic-bezier(.2,.8,.2,1);
+.app {
+  min-height: 100vh;
+  background: #fafafa;
+  color: #111111;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+.dashboard {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 72px 24px 80px;
 }
 
-html{
-  scroll-behavior:smooth;
+/* ==========================
+   HERO
+========================== */
+
+.hero {
+  margin-bottom: 64px;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-  Inter,
-  system-ui,
-  sans-serif;
+.hero-label {
+  display: inline-block;
+  margin-bottom: 18px;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+
+  color: #6e6e73;
 }
 
-button,
+.page-title {
+  margin: 0;
+
+  font-size: clamp(54px, 7vw, 72px);
+  font-weight: 600;
+  line-height: .95;
+  letter-spacing: -0.05em;
+
+  color: #111;
+}
+
+.page-subtitle {
+  margin-top: 22px;
+  max-width: 620px;
+
+  font-size: 26px;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #6e6e73;
+}
+
+/* ==========================
+   GLOBAL SECTION SPACING
+========================== */
+
+.dashboard > * + * {
+  margin-top: 72px;
+}
+
+/* ==========================
+   APPLE TRANSITIONS
+========================== */
+
+* {
+  transition:
+    background-color .18s cubic-bezier(.2,.8,.2,1),
+    border-color .18s cubic-bezier(.2,.8,.2,1),
+    color .18s cubic-bezier(.2,.8,.2,1),
+    transform .18s cubic-bezier(.2,.8,.2,1),
+    box-shadow .18s cubic-bezier(.2,.8,.2,1),
+    opacity .18s cubic-bezier(.2,.8,.2,1);
+}
+
+/* ==========================
+   TEXT
+========================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #111;
+  font-weight: 600;
+}
+
+p {
+  color: #6e6e73;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+button {
+  font-family: inherit;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+/* ==========================
+   INPUTS
+========================== */
+
 input,
-select{
-  font-family:inherit;
+select {
+  font-family: inherit;
 }
 
-.app{
+/* ==========================
+   RESPONSIVE
+========================== */
 
-   min-height:100vh;
-    background:#09090b;
+@media (max-width: 900px) {
+
+  .dashboard {
+    padding: 48px 20px 64px;
+  }
+
+  .page-title {
+    font-size: 54px;
+  }
+
+  .page-subtitle {
+    font-size: 20px;
+  }
+
 }
 
-.dashboard{
+@media (max-width: 640px) {
 
-  width:min(1440px,94%);
+  .dashboard {
+    padding: 36px 18px 48px;
+  }
 
-  margin:auto;
+  .page-title {
+    font-size: 44px;
+  }
 
-  padding-bottom:70px;
-}
-
-/* ---------------- Hero ---------------- */
-
-.hero{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:flex-end;
-
-  margin:52px 0 42px;
-}
-
-.hero h1{
-
-  font-size:72px;
-
-  line-height:1;
-
-  letter-spacing:-3px;
-
-  font-weight:700;
-}
-
-.hero p{
-
-  margin-top:14px;
-
-  font-size:24px;
-
-  color:#d6d6d6;
-}
-
-.hero p span{
-
-  color:var(--green);
-
-  font-weight:500;
-}
-
-.hero-right{
-
-  color:var(--muted);
-
-  font-size:18px;
-
-  max-width:420px;
-
-  text-align:right;
-
-  line-height:1.7;
-}
-
-/* spacing */
-
-.stats{
-
-  margin-bottom:36px;
-}
-
-.add-panel{
-
-  margin-bottom:34px;
-}
-
-.project-section{
-
-  margin-top:18px;
-}
-
-.health-banner{
-
-  margin-top:42px;
-}
-
-.footer{
-
-  margin-top:28px;
-}
-
-/* nice scrollbar */
-
-::-webkit-scrollbar{
-
-  width:10px;
-}
-
-::-webkit-scrollbar-track{
-
-  background:#09090b;
-}
-
-::-webkit-scrollbar-thumb{
-
-  background:#23232a;
-
-  border-radius:999px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-  background:#31313a;
-}
-
-@media(max-width:1100px){
-
-.hero{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-gap:18px;
-}
-
-.hero-right{
-
-text-align:left;
-}
-
-.hero h1{
-
-font-size:54px;
-}
-
-.hero p{
-
-font-size:19px;
-}
+  .page-subtitle {
+    font-size: 18px;
+  }
 
 }

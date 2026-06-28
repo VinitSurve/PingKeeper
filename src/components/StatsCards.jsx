@@ -4,146 +4,88 @@ function StatsCards({ projects }) {
   const total = projects.length;
 
   const online = projects.filter(
-    (p) => p.status === "Online"
+    (p) => p.status === "online"
   ).length;
 
   const offline = projects.filter(
-    (p) =>
-      p.status === "Offline" ||
-      p.status === "Error"
+    (p) => p.status === "offline"
   ).length;
 
-  const never = projects.filter(
-    (p) => p.status === "Never Run"
-  ).length;
+  const latencies = projects
+    .map((p) => parseInt(p.latency))
+    .filter((n) => !isNaN(n));
 
-  const avgLatency = (() => {
-    const values = projects
-      .filter((p) => p.responseTime)
-      .map((p) => p.responseTime);
-
-    if (!values.length) return "--";
-
-    return Math.round(
-      values.reduce((a, b) => a + b, 0) /
-        values.length
-    );
-  })();
-
-  const cards = [
-    {
-      title: "Total Projects",
-      value: total,
-      color: "white",
-      line: "green",
-      icon: "◈",
-    },
-    {
-      title: "Online",
-      value: online,
-      color: "green",
-      percent:
-        total > 0
-          ? `${Math.round((online / total) * 100)}%`
-          : "0%",
-      line: "green",
-      icon: "🟢",
-    },
-    {
-      title: "Offline",
-      value: offline,
-      color: "orange",
-      percent:
-        total > 0
-          ? `${Math.round((offline / total) * 100)}%`
-          : "0%",
-      line: "orange",
-      icon: "🟠",
-    },
-    {
-      title: "Never Run",
-      value: never,
-      color: "gray",
-      percent:
-        total > 0
-          ? `${Math.round((never / total) * 100)}%`
-          : "0%",
-      line: "gray",
-      icon: "⚪",
-    },
-  ];
+  const averageLatency =
+    latencies.length > 0
+      ? Math.round(
+          latencies.reduce((a, b) => a + b, 0) /
+            latencies.length
+        )
+      : "--";
 
   return (
-    <>
-      <section className="stats">
+    <section className="summary-strip">
 
-        {cards.map((card) => (
+      <div className="summary-item">
 
-          <div
-            key={card.title}
-            className="stat-card"
-          >
+        <span className="summary-value">
+          {total}
+        </span>
 
-            <div className="stat-top">
-
-              <span className="stat-icon">
-                {card.icon}
-              </span>
-
-              <span className="stat-title">
-                {card.title}
-              </span>
-
-            </div>
-
-            <div className="stat-number">
-
-              {card.value}
-
-              {card.percent && (
-
-                <span className={card.color}>
-                  {card.percent}
-                </span>
-
-              )}
-
-            </div>
-
-            <div
-              className={`stat-line ${card.line}`}
-            />
-
-          </div>
-
-        ))}
-
-      </section>
-
-      <div className="latency-card">
-
-        <div className="stat-top">
-
-          <span className="stat-icon">
-            📡
-          </span>
-
-          <span className="stat-title">
-            Avg Latency
-          </span>
-
-        </div>
-
-        <div className="stat-number">
-          {avgLatency === "--"
-            ? "--"
-            : `${avgLatency} ms`}
-        </div>
-
-        <div className="stat-line green" />
+        <span className="summary-label">
+          Projects
+        </span>
 
       </div>
-    </>
+
+      <div className="summary-divider" />
+
+      <div className="summary-item">
+
+        <span
+          className="summary-value online"
+        >
+          {online}
+        </span>
+
+        <span className="summary-label">
+          Online
+        </span>
+
+      </div>
+
+      <div className="summary-divider" />
+
+      <div className="summary-item">
+
+        <span
+          className="summary-value offline"
+        >
+          {offline}
+        </span>
+
+        <span className="summary-label">
+          Offline
+        </span>
+
+      </div>
+
+      <div className="summary-divider" />
+
+      <div className="summary-item">
+
+        <span className="summary-value">
+          {averageLatency}
+          {averageLatency !== "--" && "ms"}
+        </span>
+
+        <span className="summary-label">
+          Average Latency
+        </span>
+
+      </div>
+
+    </section>
   );
 }
 

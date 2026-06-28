@@ -1,104 +1,104 @@
 .empty-state{
 
-padding:90px 30px;
+    display:flex;
 
-border:1px dashed #2a2a33;
+    flex-direction:column;
 
-border-radius:22px;
+    align-items:center;
 
-background:#101014;
+    justify-content:center;
 
-text-align:center;
+    gap:20px;
+
+    padding:90px 40px;
+
+    background:#fff;
+
+    border:1px solid #e7e7ea;
+
+    border-radius:22px;
+
+    text-align:center;
 }
 
 .empty-icon{
 
-font-size:70px;
+    width:72px;
 
-margin-bottom:22px;
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:18px;
+
+    background:#f6f6f7;
+
+    color:#6e6e73;
 }
 
 .empty-state h2{
 
-font-size:34px;
+    font-size:28px;
 
-margin-bottom:14px;
+    font-weight:600;
+
+    color:#111;
 }
 
 .empty-state p{
 
-color:#8b8b95;
+    max-width:420px;
 
-max-width:550px;
+    color:#6e6e73;
 
-margin:auto;
+    line-height:1.7;
 
-line-height:1.7;
+    font-size:15px;
 }
 
-.empty-features{
+.empty-state button{
 
-display:flex;
+    margin-top:10px;
 
-justify-content:center;
+    height:44px;
 
-gap:26px;
+    padding:0 22px;
 
-margin-top:45px;
+    border:none;
 
-flex-wrap:wrap;
+    border-radius:999px;
+
+    background:#111;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.18s cubic-bezier(.2,.8,.2,1);
 }
 
-.feature{
+.empty-state button:hover{
 
-width:170px;
+    background:#1d1d1f;
 
-padding:22px;
-
-background:#17171d;
-
-border:1px solid #26262d;
-
-border-radius:18px;
-
-transition:.3s;
+    transform:translateY(-1px);
 }
 
-.feature:hover{
+.empty-state button:active{
 
-transform:translateY(-4px);
-
-border-color:#22c55e;
-}
-
-.feature span{
-
-font-size:34px;
-
-display:block;
-
-margin-bottom:12px;
-}
-
-.feature p{
-
-color:white;
-
-font-size:15px;
-}
-
-@media(max-width:768px){
-
-.empty-features{
-
-flex-direction:column;
-
-align-items:center;
-}
-
-.feature{
-
-width:100%;
-}
-
+    transform:scale(.98);
 }

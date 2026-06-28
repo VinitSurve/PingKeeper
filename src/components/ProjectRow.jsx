@@ -1,165 +1,168 @@
-import { useState } from "react";
 import "./ProjectRow.css";
 
-function ProjectRow({ project, onDelete }) {
-  const [open, setOpen] = useState(false);
+import {
+  Play,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
-  const status =
-    project.status === "Online"
+function ProjectRow({
+  project,
+  layout,
+  onDelete,
+}) {
+
+  const statusClass =
+    project.status === "online"
       ? "online"
-      : project.status === "Never Run"
-      ? "never"
       : "offline";
 
   return (
-    <article className={`project-row ${status}`}>
 
-      <div
-        className="project-header"
-        onClick={() => setOpen(!open)}
-      >
+    <article className={`project-row ${layout}`}>
 
-        <div className="project-info">
+      {/* Left */}
 
-          <div className={`project-icon ${status}`}>
-            ⚡
-          </div>
+      <div className="project-main">
 
-          <div>
+        <span
+          className={`status-dot ${statusClass}`}
+        />
 
-            <div className="project-name">
+        <div>
 
-              {project.name}
+          <h3>
+            {project.name}
+          </h3>
 
-            </div>
-
-            <div className="project-platform">
-
-              {project.platform}
-
-            </div>
-
-          </div>
+          <p>
+            {project.url}
+          </p>
 
         </div>
 
-        <div className="project-metrics">
+      </div>
 
-          <div className="metric">
+      {/* Platform */}
 
-            <span>Status</span>
+      <div className="project-meta">
 
-            <strong className={status}>
-              {project.status}
-            </strong>
+        <span className="meta-label">
+          Platform
+        </span>
 
-          </div>
+        <span className="meta-value">
+          {project.platform}
+        </span>
 
-          <div className="metric">
+      </div>
 
-            <span>Latency</span>
+      {/* Status */}
 
-            <strong>
-              {project.responseTime
-                ? `${project.responseTime} ms`
-                : "--"}
-            </strong>
+      <div className="project-meta">
 
-          </div>
+        <span className="meta-label">
+          Status
+        </span>
 
-          <div className="metric">
+        <span
+          className={`meta-value ${statusClass}`}
+        >
+          {project.status}
+        </span>
 
-            <span>Last Ping</span>
+      </div>
 
-            <strong>
+      {/* Latency */}
 
-              {project.lastPing
-                ? project.lastPing.toDate
-                  ? project.lastPing
-                      .toDate()
-                      .toLocaleString()
-                  : project.lastPing
-                : "Never"}
+      <div className="project-meta">
 
-            </strong>
+        <span className="meta-label">
+          Latency
+        </span>
 
-          </div>
+        <span className="meta-value">
+          {project.latency}
+        </span>
 
-        </div>
+      </div>
+
+      {/* Last Ping */}
+
+      <div className="project-meta">
+
+        <span className="meta-label">
+          Last Ping
+        </span>
+
+        <span className="meta-value">
+          {project.lastPing}
+        </span>
+
+      </div>
+
+      {/* Interval */}
+
+      <div className="project-meta">
+
+        <span className="meta-label">
+          Interval
+        </span>
+
+        <span className="meta-value">
+          {project.interval}
+        </span>
+
+      </div>
+
+      {/* Actions */}
+
+      <div className="project-actions">
+
+        <button className="ping-btn">
+
+          <Play
+            size={15}
+            strokeWidth={2}
+          />
+
+          Ping
+
+        </button>
+
+        <button className="edit-btn">
+
+          <Pencil
+            size={15}
+            strokeWidth={2}
+          />
+
+          Edit
+
+        </button>
 
         <button
-          className="more-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpen(!open);
-          }}
+          className="delete-btn"
+          onClick={() =>
+            onDelete(project.id)
+          }
         >
-          •••
+
+          <Trash2
+            size={15}
+            strokeWidth={2}
+          />
+
+          Delete
+
         </button>
 
       </div>
 
-      {open && (
-
-        <div className="project-expand">
-
-          <div className="expand-grid">
-
-            <div>
-
-              <span>Ping URL</span>
-
-              <p>{project.url}</p>
-
-            </div>
-
-            <div>
-
-              <span>Ping Interval</span>
-
-              <p>
-                Every {project.pingEveryDays} days
-              </p>
-
-            </div>
-
-            <div>
-
-              <span>Enabled</span>
-
-              <p>
-                {project.enabled ? "Yes" : "No"}
-              </p>
-
-            </div>
-
-          </div>
-
-          <div className="project-actions">
-
-            <button className="ping-btn">
-              ▶ Ping Now
-            </button>
-
-            <button className="edit-btn">
-              ✎ Edit
-            </button>
-
-            <button
-              className="delete-btn"
-              onClick={() => onDelete(project.id)}
-            >
-              🗑 Delete
-            </button>
-
-          </div>
-
-        </div>
-
-      )}
-
     </article>
+
   );
+
 }
 
 export default ProjectRow;

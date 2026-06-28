@@ -11,8 +11,11 @@
     "ping": "node scripts/ping.js"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.9.0",
     "firebase": "^12.15.0",
-    "firebase-admin": "^14.1.0",
+    "firebase-admin": "^10.3.0",
+    "framer-motion": "^12.42.0",
+    "lucide-react": "^1.21.0",
     "node-fetch": "^3.3.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

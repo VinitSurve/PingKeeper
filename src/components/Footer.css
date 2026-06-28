@@ -1,39 +1,108 @@
 .footer{
 
-margin-top:55px;
+    margin-top:96px;
 
-padding:28px 0;
+    padding:42px 0;
 
-border-top:1px solid #23232b;
+    border-top:1px solid #e7e7ea;
 
-display:flex;
+    display:flex;
 
-justify-content:space-between;
+    justify-content:space-between;
 
-align-items:center;
+    align-items:center;
 
-color:#7d7d87;
-
-font-size:14px;
+    gap:40px;
 }
 
-.footer span{
+.footer-left h3{
 
-transition:.25s;
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#111;
 }
 
-.footer span:hover{
+.footer-left span{
 
-color:white;
+    display:block;
+
+    margin-top:6px;
+
+    font-size:14px;
+
+    color:#6e6e73;
 }
 
-@media(max-width:800px){
+.footer-center{
+
+    display:flex;
+
+    gap:28px;
+}
+
+.footer-center a{
+
+    color:#6e6e73;
+
+    text-decoration:none;
+
+    font-size:14px;
+}
+
+.footer-center a:hover{
+
+    color:#111;
+}
+
+.footer-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#6e6e73;
+
+    font-size:14px;
+}
+
+.footer-right svg{
+
+    color:#ff3b30;
+}
+
+.github-link{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:999px;
+
+    color:#111;
+
+    transition:.18s;
+}
+
+.github-link:hover{
+
+    background:#f4f4f4;
+}
+
+@media(max-width:900px){
 
 .footer{
 
 flex-direction:column;
-
-gap:14px;
 
 text-align:center;
 }

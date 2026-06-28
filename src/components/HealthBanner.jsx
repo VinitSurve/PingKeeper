@@ -1,37 +1,51 @@
 import "./HealthBanner.css";
 
+import {
+  ShieldCheck,
+  ArrowRight,
+} from "lucide-react";
+
 function HealthBanner() {
   return (
     <section className="health-banner">
 
-      <div className="health-left">
+      <div className="health-icon">
 
-        <div className="health-icon">
-          🌱
-        </div>
-
-        <div>
-
-          <h3>
-            Your infrastructure is healthy!
-          </h3>
-
-          <p>
-            PingKeeper is keeping your services
-            alive and monitored.
-          </p>
-
-        </div>
+        <ShieldCheck
+          size={22}
+          strokeWidth={2}
+        />
 
       </div>
 
-      <div className="health-right">
+      <div className="health-content">
 
-        <span>
-          Keep it alive.
+        <span className="health-label">
+          Infrastructure Health
         </span>
 
+        <h3>
+          All systems operational
+        </h3>
+
+        <p>
+          Every monitored endpoint is responding normally.
+          PingKeeper continues checking your services in the
+          background.
+        </p>
+
       </div>
+
+      <button className="health-btn">
+
+        View Activity
+
+        <ArrowRight
+          size={16}
+          strokeWidth={2}
+        />
+
+      </button>
 
     </section>
   );

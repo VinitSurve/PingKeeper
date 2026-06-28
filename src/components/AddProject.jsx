@@ -3,52 +3,50 @@ import "./AddProject.css";
 
 function AddProject({ onAdd }) {
   const [name, setName] = useState("");
+  const [platform, setPlatform] = useState("Render");
   const [url, setUrl] = useState("");
-  const [platform, setPlatform] = useState("Supabase");
 
-  const handleSubmit = () => {
-    if (!name.trim() || !url.trim()) {
-      alert("Please fill all fields");
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name.trim() || !url.trim()) return;
 
     onAdd({
       name,
-      url,
       platform,
+      url,
     });
 
     setName("");
+    setPlatform("Render");
     setUrl("");
-    setPlatform("Supabase");
   };
 
   return (
-    <section className="add-panel">
+    <section className="add-project">
 
-      <div className="panel-left">
+      <div className="add-card">
 
-        <span className="panel-badge">
-          INFRASTRUCTURE
-        </span>
+        <div className="add-header">
 
-        <h2>
-          Add New Project
-        </h2>
+          <div>
 
-        <p>
-          Connect a backend endpoint that PingKeeper
-          should automatically ping every 4 days to
-          prevent free-tier suspension.
-        </p>
+            <h2>Add New Project</h2>
 
-      </div>
+            <p>
+              Monitor and automatically keep your backend alive.
+            </p>
 
-      <div className="panel-right">
+          </div>
 
-        <div className="form-grid">
+        </div>
 
-          <div className="field">
+        <form
+          className="add-form"
+          onSubmit={handleSubmit}
+        >
+
+          <div className="form-group">
 
             <label>
               Project Name
@@ -56,7 +54,7 @@ function AddProject({ onAdd }) {
 
             <input
               type="text"
-              placeholder="Portfolio Backend"
+              placeholder="Portfolio API"
               value={name}
               onChange={(e) =>
                 setName(e.target.value)
@@ -65,7 +63,7 @@ function AddProject({ onAdd }) {
 
           </div>
 
-          <div className="field">
+          <div className="form-group">
 
             <label>
               Platform
@@ -77,25 +75,26 @@ function AddProject({ onAdd }) {
                 setPlatform(e.target.value)
               }
             >
-              <option>Supabase</option>
-              <option>Railway</option>
+
               <option>Render</option>
-              <option>Firebase</option>
+              <option>Railway</option>
+              <option>Supabase</option>
+              <option>Fly.io</option>
               <option>Vercel</option>
-              <option>Other</option>
+
             </select>
 
           </div>
 
-          <div className="field full-width">
+          <div className="form-group url-field">
 
             <label>
-              Ping URL
+              Backend URL
             </label>
 
             <input
-              type="text"
-              placeholder="https://xxxxxxxx.supabase.co"
+              type="url"
+              placeholder="https://api.example.com/health"
               value={url}
               onChange={(e) =>
                 setUrl(e.target.value)
@@ -104,14 +103,14 @@ function AddProject({ onAdd }) {
 
           </div>
 
-        </div>
+          <button
+            type="submit"
+            className="add-btn"
+          >
+            Add Project
+          </button>
 
-        <button
-          className="add-project-btn"
-          onClick={handleSubmit}
-        >
-          + Add Project
-        </button>
+        </form>
 
       </div>
 
