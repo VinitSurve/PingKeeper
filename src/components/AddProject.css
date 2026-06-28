@@ -1,0 +1,128 @@
+.add-project{
+
+background:#111114;
+
+border:1px solid #23232b;
+
+border-radius:22px;
+
+padding:26px;
+
+margin-bottom:34px;
+}
+
+.add-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:24px;
+}
+
+.add-header h2{
+
+font-size:22px;
+
+margin-bottom:4px;
+}
+
+.add-header p{
+
+color:#7f7f89;
+
+font-size:14px;
+}
+
+.create-btn{
+
+padding:12px 22px;
+
+background:#22c55e;
+
+color:black;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.25s;
+}
+
+.create-btn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 25px rgba(34,197,94,.3);
+}
+
+.add-grid{
+
+display:grid;
+
+grid-template-columns:1fr 220px;
+
+gap:20px;
+}
+
+.field{
+
+display:flex;
+
+flex-direction:column;
+}
+
+.field.full{
+
+grid-column:1 / -1;
+}
+
+.field label{
+
+margin-bottom:8px;
+
+font-size:13px;
+
+color:#8d8d97;
+}
+
+.field input,
+.field select{
+
+padding:14px 16px;
+
+background:#0d0d11;
+
+border:1px solid #24242d;
+
+border-radius:14px;
+
+color:white;
+
+outline:none;
+
+font-size:14px;
+
+transition:.25s;
+}
+
+.field input:focus,
+.field select:focus{
+
+border-color:#22c55e;
+}
+
+@media(max-width:900px){
+
+.add-grid{
+
+grid-template-columns:1fr;
+}
+
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   collection,
   addDoc,
@@ -6,14 +6,24 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+
 import { db } from "./firebase/firebase";
 
-function App() {
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
-  const [projects, setProjects] = useState([]);
+import "./App.css";
 
-  // Fetch all projects
+import Navbar from "./components/Navbar";
+import AddProject from "./components/AddProject";
+import ProjectRow from "./components/ProjectRow";
+import EmptyState from "./components/EmptyState";
+
+function App() {
+  const [projects, setProjects] = useState([]);
+  const [search, setSearch] = useState("");
+
+  // ===========================
+  // Fetch Projects
+  // ===========================
+
   const fetchProjects = async () => {
     try {
       const snapshot = await getDocs(collection(db, "projects"));
@@ -24,145 +34,191 @@ function App() {
       }));
 
       setProjects(data);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  // Load projects when page loads
   useEffect(() => {
     fetchProjects();
   }, []);
 
-  // Add project
-  const handleAdd = async () => {
-    if (!name || !url) {
-      alert("Please fill all fields");
-      return;
-    }
+  // ===========================
+  // Add Project
+  // ===========================
 
+  const handleAdd = async (project) => {
     try {
       await addDoc(collection(db, "projects"), {
-  name,
-  url,
-  platform: "Supabase",
-  pingEveryDays: 4,
-  enabled: true,
-  status: "Never Run",
-  responseTime: null,
-  lastPing: null,
-  createdAt: new Date(),
-});
+        name: project.name,
+        url: project.url,
+        platform: project.platform,
 
-      setName("");
-      setUrl("");
+        pingEveryDays: 4,
+
+        enabled: true,
+
+        status: "Never Run",
+
+        responseTime: null,
+
+        lastPing: null,
+
+        createdAt: new Date(),
+      });
 
       await fetchProjects();
-
-      alert("Project Added!");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to add project.");
+    } catch (err) {
+      console.error(err);
+      alert("Unable to add project.");
     }
   };
 
-  // Delete project
+  // ===========================
+  // Delete Project
+  // ===========================
+
   const handleDelete = async (id) => {
+    const ok = window.confirm(
+      "Delete this project?"
+    );
+
+    if (!ok) return;
+
     try {
       await deleteDoc(doc(db, "projects", id));
-      await fetchProjects();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete project.");
+
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
     }
   };
 
+  // ===========================
+  // Search
+  // ===========================
+
+  const filteredProjects = useMemo(() => {
+    return projects.filter((project) => {
+      return (
+        project.name
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+
+        project.platform
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+
+        project.url
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    });
+  }, [projects, search]);
+
+  // ===========================
+  // Stats
+  // ===========================
+
+  const totalProjects = projects.length;
+
+  const onlineProjects = projects.filter(
+    (p) => p.status === "Online"
+  ).length;
+
+  const offlineProjects = projects.filter(
+    (p) =>
+      p.status !== "Online" &&
+      p.status !== "Never Run"
+  ).length;
+
+  const neverRunProjects = projects.filter(
+    (p) => p.status === "Never Run"
+  ).length;
+
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>PingKeeper</h1>
+    <div className="app">
 
-      <input
-        type="text"
-        placeholder="Project Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <Navbar />
 
-      <br />
-      <br />
+      <div className="topbar">
 
-      <input
-        type="text"
-        placeholder="Project URL"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
+        <div>
 
-      <br />
-      <br />
+          <h1>Infrastructure</h1>
 
-      <button onClick={handleAdd}>Add Project</button>
+          <p>
+            Manage all your cloud projects from
+            one place.
+          </p>
 
-      <hr />
+        </div>
 
-      <h2>Projects</h2>
+        <input
+          className="global-search"
+          placeholder="Search project..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
 
-      {projects.length === 0 ? (
-        <p>No projects added yet.</p>
-      ) : (
-        projects.map((project) => (
-          <div
-            key={project.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "15px",
-              marginBottom: "15px",
-              borderRadius: "8px",
-              maxWidth: "600px",
-            }}
-          >
-            <strong>{project.name}</strong>
+      </div>
 
-            <br />
-            <br />
+      <div className="stats">
 
-            <strong>URL:</strong>
-            <br />
-            {project.url}
+        <div className="stat">
 
-            <br />
-            <br />
+          <span>Total</span>
 
-            <strong>Status:</strong> {project.status}
+          <h2>{totalProjects}</h2>
 
-            <br />
+        </div>
 
-            <strong>Enabled:</strong>{" "}
-            {project.enabled ? "Yes" : "No"}
+        <div className="stat">
 
-            <br />
+          <span>Online</span>
 
-            <strong>Last Ping:</strong>{" "}
-            {project.lastPing
-              ? project.lastPing.toDate
-                ? project.lastPing.toDate().toLocaleString()
-                : project.lastPing
-              : "Never"}
+          <h2>{onlineProjects}</h2>
 
-            <br />
+        </div>
 
-            <strong>Response Time:</strong>{" "}
-            {project.responseTime ?? "-"} ms
+        <div className="stat">
 
-            <br />
-            <br />
+          <span>Offline</span>
 
-            <button onClick={() => handleDelete(project.id)}>
-              Delete
-            </button>
-          </div>
-        ))
-      )}
+          <h2>{offlineProjects}</h2>
+
+        </div>
+
+        <div className="stat">
+
+          <span>Never Run</span>
+
+          <h2>{neverRunProjects}</h2>
+
+        </div>
+
+      </div>
+
+      <AddProject onAdd={handleAdd} />
+
+      <section className="workspace">
+
+        {filteredProjects.length === 0 ? (
+          <EmptyState />
+        ) : (
+          filteredProjects.map((project) => (
+            <ProjectRow
+              key={project.id}
+              project={project}
+              onDelete={handleDelete}
+            />
+          ))
+        )}
+
+      </section>
+
     </div>
   );
 }
