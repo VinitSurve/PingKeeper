@@ -1,219 +1,214 @@
 .navbar{
 
-display:flex;
+    position:sticky;
+    top:0;
+    z-index:100;
 
-justify-content:space-between;
+    width:min(1440px,94%);
+    margin:24px auto 0;
 
-align-items:center;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-padding:20px 0;
+    padding:18px 22px;
 
-margin-bottom:40px;
+    border:1px solid #23242b;
+    border-radius:22px;
 
-border-bottom:1px solid #202026;
+    background:rgba(16,16,20,.82);
 
-position:sticky;
+    backdrop-filter:blur(18px);
 
-top:0;
-
-backdrop-filter:blur(18px);
-
-background:rgba(9,9,11,.85);
-
-z-index:100;
-}
-
-.navbar-left{
-
-display:flex;
-
-align-items:center;
-
-gap:45px;
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.25);
 }
 
 .logo{
 
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-font-size:26px;
-
-font-weight:700;
-
-letter-spacing:-1px;
+    display:flex;
+    align-items:center;
+    gap:16px;
 }
 
-.logo-pulse{
+.logo-circle{
 
-width:12px;
+    width:52px;
+    height:52px;
 
-height:12px;
+    border-radius:18px;
 
-border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-background:#22c55e;
+    background:rgba(34,197,94,.12);
 
-box-shadow:0 0 18px rgba(34,197,94,.7);
+    color:#22c55e;
 
-animation:pulse 4s infinite;
+    font-size:22px;
+
+    border:1px solid rgba(34,197,94,.25);
+
+    box-shadow:
+    0 0 30px rgba(34,197,94,.15);
 }
 
-@keyframes pulse{
+.logo h2{
 
-0%{
+    font-size:22px;
 
-opacity:.35;
+    margin-bottom:3px;
 
-transform:scale(.8);
+    letter-spacing:-.5px;
 }
 
-50%{
+.logo span{
 
-opacity:1;
+    color:#8b8b95;
 
-transform:scale(1.1);
+    font-size:13px;
 }
 
-100%{
+.nav-center{
 
-opacity:.35;
+    flex:1;
 
-transform:scale(.8);
+    display:flex;
+    justify-content:center;
+
+    padding:0 40px;
 }
 
+.search-box{
+
+    width:100%;
+    max-width:540px;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    height:54px;
+
+    background:#17181d;
+
+    border:1px solid #2a2b33;
+
+    border-radius:16px;
+
+    padding:0 16px;
+
+    transition:.25s;
 }
 
-nav{
+.search-box:focus-within{
 
-display:flex;
+    border-color:#22c55e;
 
-gap:10px;
+    box-shadow:
+    0 0 0 4px rgba(34,197,94,.10);
 }
 
-nav button{
+.search-icon{
 
-background:none;
-
-border:none;
-
-color:#8b8b95;
-
-padding:11px 16px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-transition:.25s;
-
-font-size:14px;
+    color:#8b8b95;
 }
 
-nav button:hover{
+.search-box input{
 
-background:#18181d;
+    flex:1;
 
-color:white;
+    border:none;
+    outline:none;
+
+    background:transparent;
+
+    color:white;
+
+    font-size:15px;
 }
 
-nav .active{
+.search-box input::placeholder{
 
-background:#17171c;
-
-color:white;
+    color:#6b7280;
 }
 
-.navbar-right{
+.search-box kbd{
 
-display:flex;
+    padding:6px 10px;
 
-align-items:center;
+    border-radius:8px;
 
-gap:15px;
-}
+    background:#202127;
 
-.navbar-right input{
+    color:#9ca3af;
 
-width:270px;
+    font-size:12px;
 
-padding:13px 16px;
-
-background:#111114;
-
-border:1px solid #24242b;
-
-border-radius:14px;
-
-outline:none;
-
-color:white;
-
-font-size:14px;
-
-transition:.25s;
-}
-
-.navbar-right input:focus{
-
-border-color:#22c55e;
+    border:1px solid #2d2e35;
 }
 
 .github-btn{
 
-text-decoration:none;
+    height:52px;
 
-background:#17171c;
+    padding:0 20px;
 
-padding:13px 18px;
+    border-radius:16px;
 
-border-radius:14px;
+    border:1px solid #2a2b33;
 
-color:white;
+    background:#17181d;
 
-transition:.25s;
+    color:white;
 
-font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    font-weight:600;
 }
 
 .github-btn:hover{
 
-background:#22c55e;
+    transform:translateY(-2px);
 
-color:black;
+    border-color:#3a3b45;
+
+    background:#1d1e24;
 }
 
-@media(max-width:950px){
+@media(max-width:1100px){
 
 .navbar{
 
 flex-direction:column;
 
-align-items:flex-start;
-
 gap:20px;
 }
 
-.navbar-left{
+.nav-center{
 
-flex-direction:column;
+width:100%;
 
-align-items:flex-start;
-
-gap:20px;
+padding:0;
 }
 
-.navbar-right{
+.nav-right{
 
 width:100%;
 }
 
-.navbar-right input{
+.github-btn{
 
 width:100%;
+
+justify-content:center;
 }
 
 }

@@ -4,57 +4,60 @@ function Navbar({ search, setSearch }) {
   return (
     <header className="navbar">
 
-      <div className="navbar-left">
+      <div className="nav-left">
 
         <div className="logo">
 
-          <div className="logo-pulse"></div>
+          <div className="logo-circle">
+            ⚡
+          </div>
 
-          <span>PingKeeper</span>
+          <div>
+
+            <h2>PingKeeper</h2>
+
+            <span>
+              Infrastructure Workspace
+            </span>
+
+          </div>
 
         </div>
 
-        <nav>
+      </div>
 
-          <button className="active">
-            Projects
-          </button>
+      <div className="nav-center">
 
-          <button>
-            Activity
-          </button>
+        <div className="search-box">
 
-          <button>
-            Analytics
-          </button>
+          <span className="search-icon">
+            🔍
+          </span>
 
-          <button>
-            Settings
-          </button>
+          <input
+            type="text"
+            placeholder="Search projects..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+          />
 
-        </nav>
+          <kbd>⌘K</kbd>
+
+        </div>
 
       </div>
 
-      <div className="navbar-right">
+      <div className="nav-right">
 
-        <input
-          type="text"
-          placeholder="Search projects..."
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-        />
+        <button className="github-btn">
 
-        <a
-          href="https://github.com/"
-          target="_blank"
-          rel="noreferrer"
-          className="github-btn"
-        >
-          ⭐ GitHub
-        </a>
+          <span>⭐</span>
+
+          GitHub
+
+        </button>
 
       </div>
 
