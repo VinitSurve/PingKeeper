@@ -1,0 +1,41 @@
+.footer{
+
+margin-top:55px;
+
+padding:28px 0;
+
+border-top:1px solid #23232b;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+color:#7d7d87;
+
+font-size:14px;
+}
+
+.footer span{
+
+transition:.25s;
+}
+
+.footer span:hover{
+
+color:white;
+}
+
+@media(max-width:800px){
+
+.footer{
+
+flex-direction:column;
+
+gap:14px;
+
+text-align:center;
+}
+
+}

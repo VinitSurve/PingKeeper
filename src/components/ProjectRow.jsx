@@ -2,9 +2,9 @@ import { useState } from "react";
 import "./ProjectRow.css";
 
 function ProjectRow({ project, onDelete }) {
-  const [expanded, setExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const statusClass =
+  const status =
     project.status === "Online"
       ? "online"
       : project.status === "Never Run"
@@ -12,42 +12,52 @@ function ProjectRow({ project, onDelete }) {
       : "offline";
 
   return (
-    <div className={`project-row ${expanded ? "expanded" : ""}`}>
+    <article className={`project-row ${status}`}>
 
       <div
-        className="project-main"
-        onClick={() => setExpanded(!expanded)}
+        className="project-header"
+        onClick={() => setOpen(!open)}
       >
 
-        <div className="project-left">
+        <div className="project-info">
 
-          <span className={`status-dot ${statusClass}`}></span>
+          <div className={`project-icon ${status}`}>
+            ⚡
+          </div>
 
           <div>
 
-            <h3>{project.name}</h3>
+            <div className="project-name">
 
-            <span className="platform">
+              {project.name}
+
+            </div>
+
+            <div className="project-platform">
+
               {project.platform}
-            </span>
+
+            </div>
 
           </div>
 
         </div>
 
-        <div className="project-middle">
+        <div className="project-metrics">
 
           <div className="metric">
 
-            <small>Status</small>
+            <span>Status</span>
 
-            <strong>{project.status}</strong>
+            <strong className={status}>
+              {project.status}
+            </strong>
 
           </div>
 
           <div className="metric">
 
-            <small>Latency</small>
+            <span>Latency</span>
 
             <strong>
               {project.responseTime
@@ -59,9 +69,10 @@ function ProjectRow({ project, onDelete }) {
 
           <div className="metric">
 
-            <small>Last Ping</small>
+            <span>Last Ping</span>
 
             <strong>
+
               {project.lastPing
                 ? project.lastPing.toDate
                   ? project.lastPing
@@ -69,39 +80,46 @@ function ProjectRow({ project, onDelete }) {
                       .toLocaleString()
                   : project.lastPing
                 : "Never"}
+
             </strong>
 
           </div>
 
         </div>
 
-        <div className="project-arrow">
-
-          {expanded ? "−" : "+"}
-
-        </div>
+        <button
+          className="more-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(!open);
+          }}
+        >
+          •••
+        </button>
 
       </div>
 
-      {expanded && (
+      {open && (
 
-        <div className="project-details">
+        <div className="project-expand">
 
-          <div className="detail-block">
-
-            <span>Ping URL</span>
-
-            <p>{project.url}</p>
-
-          </div>
-
-          <div className="detail-grid">
+          <div className="expand-grid">
 
             <div>
 
-              <span>Interval</span>
+              <span>Ping URL</span>
 
-              <p>Every {project.pingEveryDays} days</p>
+              <p>{project.url}</p>
+
+            </div>
+
+            <div>
+
+              <span>Ping Interval</span>
+
+              <p>
+                Every {project.pingEveryDays} days
+              </p>
 
             </div>
 
@@ -109,7 +127,9 @@ function ProjectRow({ project, onDelete }) {
 
               <span>Enabled</span>
 
-              <p>{project.enabled ? "Yes" : "No"}</p>
+              <p>
+                {project.enabled ? "Yes" : "No"}
+              </p>
 
             </div>
 
@@ -118,18 +138,18 @@ function ProjectRow({ project, onDelete }) {
           <div className="project-actions">
 
             <button className="ping-btn">
-              Ping Now
+              ▶ Ping Now
             </button>
 
             <button className="edit-btn">
-              Edit
+              ✎ Edit
             </button>
 
             <button
               className="delete-btn"
               onClick={() => onDelete(project.id)}
             >
-              Delete
+              🗑 Delete
             </button>
 
           </div>
@@ -138,7 +158,7 @@ function ProjectRow({ project, onDelete }) {
 
       )}
 
-    </div>
+    </article>
   );
 }
 

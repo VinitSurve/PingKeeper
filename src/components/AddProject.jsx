@@ -24,71 +24,110 @@ function AddProject({ onAdd }) {
   };
 
   return (
-    <section className="add-project">
+    <section className="add-panel">
 
-      <div className="add-header">
+      <div className="panel-header">
 
         <div>
 
-          <h2>Add Project</h2>
+          <span className="panel-tag">
+            Infrastructure
+          </span>
+
+          <h2>
+            Add Project
+          </h2>
 
           <p>
-            Add a backend endpoint to keep alive.
+            Add a backend endpoint that should be
+            pinged every 4 days.
           </p>
 
         </div>
 
         <button
-          className="create-btn"
+          className="add-project-btn"
           onClick={handleSubmit}
         >
-          + Add
+          + Add Project
         </button>
 
       </div>
 
-      <div className="add-grid">
+      <div className="form-grid">
 
         <div className="field">
 
-          <label>Project Name</label>
+          <label>
+            Project Name
+          </label>
 
           <input
             type="text"
             placeholder="Portfolio Backend"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
           />
 
         </div>
 
         <div className="field">
 
-          <label>Platform</label>
+          <label>
+            Platform
+          </label>
 
           <select
             value={platform}
-            onChange={(e) => setPlatform(e.target.value)}
+            onChange={(e) =>
+              setPlatform(e.target.value)
+            }
           >
-            <option>Supabase</option>
-            <option>Render</option>
-            <option>Railway</option>
-            <option>Vercel</option>
-            <option>Fly.io</option>
-            <option>Custom</option>
+            <option>
+              Supabase
+            </option>
+
+            <option>
+              Railway
+            </option>
+
+            <option>
+              Render
+            </option>
+
+            <option>
+              Vercel
+            </option>
+
+            <option>
+              Firebase
+            </option>
+
+            <option>
+              Other
+            </option>
+
           </select>
 
         </div>
 
-        <div className="field full">
+        <div
+          className="field full-width"
+        >
 
-          <label>Ping URL</label>
+          <label>
+            Ping URL
+          </label>
 
           <input
             type="text"
             placeholder="https://xxxxxxxx.supabase.co"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={(e) =>
+              setUrl(e.target.value)
+            }
           />
 
         </div>

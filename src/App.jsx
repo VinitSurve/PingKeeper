@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   addDoc,
@@ -12,17 +12,15 @@ import { db } from "./firebase/firebase";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
+import StatsCards from "./components/StatsCards";
 import AddProject from "./components/AddProject";
-import ProjectRow from "./components/ProjectRow";
-import EmptyState from "./components/EmptyState";
+import ProjectList from "./components/ProjectList";
+import HealthBanner from "./components/HealthBanner";
+import Footer from "./components/Footer";
 
 function App() {
   const [projects, setProjects] = useState([]);
   const [search, setSearch] = useState("");
-
-  // ===========================
-  // Fetch Projects
-  // ===========================
 
   const fetchProjects = async () => {
     try {
@@ -43,48 +41,27 @@ function App() {
     fetchProjects();
   }, []);
 
-  // ===========================
-  // Add Project
-  // ===========================
-
   const handleAdd = async (project) => {
     try {
       await addDoc(collection(db, "projects"), {
         name: project.name,
         url: project.url,
         platform: project.platform,
-
         pingEveryDays: 4,
-
         enabled: true,
-
         status: "Never Run",
-
         responseTime: null,
-
         lastPing: null,
-
         createdAt: new Date(),
       });
 
-      await fetchProjects();
+      fetchProjects();
     } catch (err) {
       console.error(err);
-      alert("Unable to add project.");
     }
   };
 
-  // ===========================
-  // Delete Project
-  // ===========================
-
   const handleDelete = async (id) => {
-    const ok = window.confirm(
-      "Delete this project?"
-    );
-
-    if (!ok) return;
-
     try {
       await deleteDoc(doc(db, "projects", id));
 
@@ -94,130 +71,51 @@ function App() {
     }
   };
 
-  // ===========================
-  // Search
-  // ===========================
+  const filteredProjects = projects.filter((project) => {
+    const q = search.toLowerCase();
 
-  const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
-      return (
-        project.name
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-
-        project.platform
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-
-        project.url
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      );
-    });
-  }, [projects, search]);
-
-  // ===========================
-  // Stats
-  // ===========================
-
-  const totalProjects = projects.length;
-
-  const onlineProjects = projects.filter(
-    (p) => p.status === "Online"
-  ).length;
-
-  const offlineProjects = projects.filter(
-    (p) =>
-      p.status !== "Online" &&
-      p.status !== "Never Run"
-  ).length;
-
-  const neverRunProjects = projects.filter(
-    (p) => p.status === "Never Run"
-  ).length;
+    return (
+      project.name.toLowerCase().includes(q) ||
+      project.platform.toLowerCase().includes(q) ||
+      project.url.toLowerCase().includes(q)
+    );
+  });
 
   return (
     <div className="app">
 
-      <Navbar />
+      <Navbar
+        search={search}
+        setSearch={setSearch}
+      />
 
-      <div className="topbar">
+      <main className="dashboard">
 
-        <div>
+        <section className="hero">
 
           <h1>Infrastructure</h1>
 
           <p>
-            Manage all your cloud projects from
-            one place.
+            Manage your cloud projects from one
+            beautiful workspace.
           </p>
 
-        </div>
+        </section>
 
-        <input
-          className="global-search"
-          placeholder="Search project..."
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
+        <StatsCards projects={projects} />
+
+        <AddProject onAdd={handleAdd} />
+
+        <ProjectList
+          projects={filteredProjects}
+          onDelete={handleDelete}
         />
 
-      </div>
+        <HealthBanner />
 
-      <div className="stats">
+        <Footer />
 
-        <div className="stat">
-
-          <span>Total</span>
-
-          <h2>{totalProjects}</h2>
-
-        </div>
-
-        <div className="stat">
-
-          <span>Online</span>
-
-          <h2>{onlineProjects}</h2>
-
-        </div>
-
-        <div className="stat">
-
-          <span>Offline</span>
-
-          <h2>{offlineProjects}</h2>
-
-        </div>
-
-        <div className="stat">
-
-          <span>Never Run</span>
-
-          <h2>{neverRunProjects}</h2>
-
-        </div>
-
-      </div>
-
-      <AddProject onAdd={handleAdd} />
-
-      <section className="workspace">
-
-        {filteredProjects.length === 0 ? (
-          <EmptyState />
-        ) : (
-          filteredProjects.map((project) => (
-            <ProjectRow
-              key={project.id}
-              project={project}
-              onDelete={handleDelete}
-            />
-          ))
-        )}
-
-      </section>
+      </main>
 
     </div>
   );
