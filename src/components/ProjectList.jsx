@@ -1,44 +1,54 @@
+import "./ProjectList.css";
 import ProjectRow from "./ProjectRow";
 import EmptyState from "./EmptyState";
-import "./ProjectList.css";
 
 function ProjectList({ projects, onDelete }) {
-  if (projects.length === 0) {
+  if (!projects.length) {
     return <EmptyState />;
   }
 
   return (
     <section className="project-section">
 
-      <div className="section-heading">
+      <div className="project-wrapper">
 
-        <div>
+        <div className="section-heading">
 
-          <span className="section-tag">
-            Infrastructure
-          </span>
+          <div className="heading-left">
 
-          <h2>
-            Active Projects
-          </h2>
+            <h2>Your Projects</h2>
+
+            <p className="project-count">
+              {projects.length} Projects
+            </p>
+
+          </div>
+
+          <div className="heading-right">
+
+            <button className="sort-btn">
+              Sort by: Last Ping ▼
+            </button>
+
+            <button className="view-btn">
+              ☷
+            </button>
+
+          </div>
 
         </div>
 
-        <span className="project-count">
-          {projects.length} Projects
-        </span>
+        <div className="project-list">
 
-      </div>
+          {projects.map((project) => (
+            <ProjectRow
+              key={project.id}
+              project={project}
+              onDelete={onDelete}
+            />
+          ))}
 
-      <div className="project-list">
-
-        {projects.map((project) => (
-          <ProjectRow
-            key={project.id}
-            project={project}
-            onDelete={onDelete}
-          />
-        ))}
+        </div>
 
       </div>
 

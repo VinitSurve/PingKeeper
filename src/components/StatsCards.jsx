@@ -13,13 +13,13 @@ function StatsCards({ projects }) {
       p.status === "Error"
   ).length;
 
-  const neverRun = projects.filter(
+  const never = projects.filter(
     (p) => p.status === "Never Run"
   ).length;
 
   const avgLatency = (() => {
     const values = projects
-      .filter((p) => p.responseTime !== null)
+      .filter((p) => p.responseTime)
       .map((p) => p.responseTime);
 
     if (!values.length) return "--";
@@ -32,74 +32,118 @@ function StatsCards({ projects }) {
 
   const cards = [
     {
-      title: "Projects",
+      title: "Total Projects",
       value: total,
-      color: "",
-      icon: "◉",
+      color: "white",
+      line: "green",
+      icon: "◈",
     },
     {
-      title: "Healthy",
+      title: "Online",
       value: online,
       color: "green",
-      icon: "●",
+      percent:
+        total > 0
+          ? `${Math.round((online / total) * 100)}%`
+          : "0%",
+      line: "green",
+      icon: "🟢",
     },
     {
       title: "Offline",
       value: offline,
-      color: "red",
-      icon: "●",
+      color: "orange",
+      percent:
+        total > 0
+          ? `${Math.round((offline / total) * 100)}%`
+          : "0%",
+      line: "orange",
+      icon: "🟠",
     },
     {
       title: "Never Run",
-      value: neverRun,
+      value: never,
       color: "gray",
-      icon: "◌",
-    },
-    {
-      title: "Avg Latency",
-      value:
-        avgLatency === "--"
-          ? "--"
-          : `${avgLatency} ms`,
-      color: "blue",
-      icon: "↗",
+      percent:
+        total > 0
+          ? `${Math.round((never / total) * 100)}%`
+          : "0%",
+      line: "gray",
+      icon: "⚪",
     },
   ];
 
   return (
-    <section className="stats">
+    <>
+      <section className="stats">
 
-      {cards.map((card) => (
-        <div
-          key={card.title}
-          className="stat-card"
-        >
-          <div className="stat-top">
+        {cards.map((card) => (
 
-            <span
-              className={`stat-dot ${card.color}`}
-            >
-              {card.icon}
-            </span>
+          <div
+            key={card.title}
+            className="stat-card"
+          >
 
-            <span className="stat-title">
-              {card.title}
-            </span>
+            <div className="stat-top">
+
+              <span className="stat-icon">
+                {card.icon}
+              </span>
+
+              <span className="stat-title">
+                {card.title}
+              </span>
+
+            </div>
+
+            <div className="stat-number">
+
+              {card.value}
+
+              {card.percent && (
+
+                <span className={card.color}>
+                  {card.percent}
+                </span>
+
+              )}
+
+            </div>
+
+            <div
+              className={`stat-line ${card.line}`}
+            />
 
           </div>
 
-          <h2>{card.value}</h2>
+        ))}
 
-          <div className="stat-footer">
+      </section>
 
-            <div className="stat-bar" />
+      <div className="latency-card">
 
-          </div>
+        <div className="stat-top">
+
+          <span className="stat-icon">
+            📡
+          </span>
+
+          <span className="stat-title">
+            Avg Latency
+          </span>
 
         </div>
-      ))}
 
-    </section>
+        <div className="stat-number">
+          {avgLatency === "--"
+            ? "--"
+            : `${avgLatency} ms`}
+        </div>
+
+        <div className="stat-line green" />
+
+      </div>
+    </>
   );
 }
 

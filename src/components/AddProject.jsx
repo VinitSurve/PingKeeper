@@ -8,7 +8,7 @@ function AddProject({ onAdd }) {
 
   const handleSubmit = () => {
     if (!name.trim() || !url.trim()) {
-      alert("Please fill all fields.");
+      alert("Please fill all fields");
       return;
     }
 
@@ -26,22 +26,83 @@ function AddProject({ onAdd }) {
   return (
     <section className="add-panel">
 
-      <div className="panel-header">
+      <div className="panel-left">
 
-        <div>
+        <span className="panel-badge">
+          INFRASTRUCTURE
+        </span>
 
-          <span className="panel-tag">
-            Infrastructure
-          </span>
+        <h2>
+          Add New Project
+        </h2>
 
-          <h2>
-            Add Project
-          </h2>
+        <p>
+          Connect a backend endpoint that PingKeeper
+          should automatically ping every 4 days to
+          prevent free-tier suspension.
+        </p>
 
-          <p>
-            Add a backend endpoint that should be
-            pinged every 4 days.
-          </p>
+      </div>
+
+      <div className="panel-right">
+
+        <div className="form-grid">
+
+          <div className="field">
+
+            <label>
+              Project Name
+            </label>
+
+            <input
+              type="text"
+              placeholder="Portfolio Backend"
+              value={name}
+              onChange={(e) =>
+                setName(e.target.value)
+              }
+            />
+
+          </div>
+
+          <div className="field">
+
+            <label>
+              Platform
+            </label>
+
+            <select
+              value={platform}
+              onChange={(e) =>
+                setPlatform(e.target.value)
+              }
+            >
+              <option>Supabase</option>
+              <option>Railway</option>
+              <option>Render</option>
+              <option>Firebase</option>
+              <option>Vercel</option>
+              <option>Other</option>
+            </select>
+
+          </div>
+
+          <div className="field full-width">
+
+            <label>
+              Ping URL
+            </label>
+
+            <input
+              type="text"
+              placeholder="https://xxxxxxxx.supabase.co"
+              value={url}
+              onChange={(e) =>
+                setUrl(e.target.value)
+              }
+            />
+
+          </div>
 
         </div>
 
@@ -51,86 +112,6 @@ function AddProject({ onAdd }) {
         >
           + Add Project
         </button>
-
-      </div>
-
-      <div className="form-grid">
-
-        <div className="field">
-
-          <label>
-            Project Name
-          </label>
-
-          <input
-            type="text"
-            placeholder="Portfolio Backend"
-            value={name}
-            onChange={(e) =>
-              setName(e.target.value)
-            }
-          />
-
-        </div>
-
-        <div className="field">
-
-          <label>
-            Platform
-          </label>
-
-          <select
-            value={platform}
-            onChange={(e) =>
-              setPlatform(e.target.value)
-            }
-          >
-            <option>
-              Supabase
-            </option>
-
-            <option>
-              Railway
-            </option>
-
-            <option>
-              Render
-            </option>
-
-            <option>
-              Vercel
-            </option>
-
-            <option>
-              Firebase
-            </option>
-
-            <option>
-              Other
-            </option>
-
-          </select>
-
-        </div>
-
-        <div
-          className="field full-width"
-        >
-
-          <label>
-            Ping URL
-          </label>
-
-          <input
-            type="text"
-            placeholder="https://xxxxxxxx.supabase.co"
-            value={url}
-            onChange={(e) =>
-              setUrl(e.target.value)
-            }
-          />
-
-        </div>
 
       </div>
 
