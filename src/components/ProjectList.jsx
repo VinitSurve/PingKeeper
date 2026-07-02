@@ -13,6 +13,7 @@ import EmptyState from "./EmptyState";
 function ProjectList({
   projects,
   onDelete,
+  onEdit
 }) {
   const [layout, setLayout] = useState("list");
 
@@ -107,6 +108,7 @@ function ProjectList({
             project={project}
             layout={layout}
             onDelete={onDelete}
+            onEdit={onEdit}
           />
 
         ))}

@@ -1,0 +1,230 @@
+.modal-overlay{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(10px);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  z-index:1000;
+
+  animation:fadeIn .18s ease;
+}
+
+.modal{
+
+  width:min(92vw,520px);
+
+  background:#fff;
+
+  border:1px solid #ececec;
+
+  border-radius:24px;
+
+  padding:32px;
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.12);
+
+  animation:modalIn .22s cubic-bezier(.2,.8,.2,1);
+}
+
+.modal h2{
+
+  margin:0 0 28px;
+
+  font-size:28px;
+  font-weight:600;
+  letter-spacing:-.03em;
+
+  color:#111;
+}
+
+/* ======================
+   FORM
+====================== */
+
+.form-group{
+
+  display:flex;
+  flex-direction:column;
+
+  gap:8px;
+
+  margin-bottom:22px;
+}
+
+.form-group label{
+
+  font-size:13px;
+
+  font-weight:600;
+
+  color:#6e6e73;
+
+  letter-spacing:.04em;
+
+  text-transform:uppercase;
+}
+
+.form-group input,
+.form-group select{
+
+  height:48px;
+
+  padding:0 16px;
+
+  border:1px solid #e7e7ea;
+
+  border-radius:14px;
+
+  background:#fff;
+
+  font-size:15px;
+
+  outline:none;
+
+  transition:.18s;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+
+  border-color:#111;
+
+  box-shadow:
+    0 0 0 4px rgba(0,0,0,.05);
+}
+
+/* ======================
+   ACTIONS
+====================== */
+
+.modal-actions{
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  gap:12px;
+
+  margin-top:32px;
+}
+
+.cancel-btn,
+.save-btn{
+
+  height:42px;
+
+  padding:0 22px;
+
+  border-radius:999px;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.18s;
+}
+
+.cancel-btn{
+
+  border:1px solid #e7e7ea;
+
+  background:#fff;
+
+  color:#111;
+}
+
+.cancel-btn:hover{
+
+  background:#f6f6f7;
+}
+
+.save-btn{
+
+  border:none;
+
+  background:#111;
+
+  color:#fff;
+}
+
+.save-btn:hover{
+
+  background:#1d1d1f;
+}
+
+/* ======================
+   ANIMATIONS
+====================== */
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:1;
+  }
+
+}
+
+@keyframes modalIn{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(18px)
+      scale(.98);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+/* ======================
+   MOBILE
+====================== */
+
+@media(max-width:600px){
+
+.modal{
+
+padding:24px;
+
+border-radius:20px;
+
+}
+
+.modal-actions{
+
+flex-direction:column;
+
+}
+
+.cancel-btn,
+.save-btn{
+
+width:100%;
+
+}
+
+}

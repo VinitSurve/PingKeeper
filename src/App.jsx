@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
+import EditProjectModal from "./components/EditProjectModal";
 
 import {
   collection,
@@ -8,6 +9,7 @@ import {
   doc,
   onSnapshot,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 import { db } from "./firebase/firebase";
@@ -21,6 +23,7 @@ import Footer from "./components/Footer";
 
 function App() {
   const [search, setSearch] = useState("");
+  const [editingProject, setEditingProject] = useState(null);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -72,6 +75,52 @@ function App() {
     }
   };
 
+  const handleEdit = (project) => {
+  setEditingProject(project);
+};
+
+  const handleSave = async (updatedProject) => {
+
+  try {
+
+    await updateDoc(
+
+      doc(
+        db,
+        "projects",
+        updatedProject.id
+      ),
+
+      {
+
+        name: updatedProject.name,
+
+        platform: updatedProject.platform,
+
+        url: updatedProject.url,
+
+        interval: updatedProject.interval,
+
+      }
+
+    );
+
+    setEditingProject(null);
+
+  }
+
+  catch(error){
+
+    console.error(error);
+
+    alert(
+      "Unable to update project."
+    );
+
+  }
+
+};
+
   const filteredProjects = useMemo(() => {
     const value = search.toLowerCase();
 
@@ -116,9 +165,17 @@ function App() {
           projects={filteredProjects}
           loading={loading}
           onDelete={handleDelete}
+          onEdit={handleEdit}
         />
 
         <HealthBanner />
+
+        <EditProjectModal
+          open={!!editingProject}
+          project={editingProject}
+          onClose={() => setEditingProject(null)}
+          onSave={handleSave}
+        />
 
         <Footer />
 

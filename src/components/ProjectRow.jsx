@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {triggerPingWorkflow} from "../github/github.js";
 
 import "./ProjectRow.css";
 
@@ -14,10 +15,13 @@ function ProjectRow({
   project,
   layout,
   onDelete,
+  onEdit
 }) {
 
   const [expanded, setExpanded] =
     useState(false);
+
+  const [pinging, setPinging] = useState(false);
 
   const status = String(project.status || "")
     .toLowerCase();
@@ -64,6 +68,36 @@ function ProjectRow({
     }
 
   })();
+
+  const handlePing = async () => {
+
+  if (pinging) return;
+
+  try {
+
+    setPinging(true);
+
+    await triggerPingWorkflow();
+
+    alert(
+      "Ping workflow started successfully!"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Failed to trigger workflow."
+    );
+
+  } finally {
+
+    setPinging(false);
+
+  }
+
+};
 
   return (
 
@@ -192,20 +226,27 @@ function ProjectRow({
           <button
             className="ping-btn"
             type="button"
+            onClick={handlePing}
+            disabled={pinging}
           >
 
-            <Play
-              size={15}
-              strokeWidth={2}
-            />
+          <Play
+            size={15}
+            strokeWidth={2}
+          />
 
-            Ping
+          {pinging
+            ? "Pinging..."
+            : "Ping"}
 
           </button>
 
           <button
             className="edit-btn"
             type="button"
+            onClick={() =>
+              onEdit(project)
+            }
           >
 
             <Pencil
